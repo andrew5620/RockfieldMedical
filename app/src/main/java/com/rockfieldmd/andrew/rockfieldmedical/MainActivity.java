@@ -13,8 +13,11 @@ import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +37,8 @@ public class MainActivity extends Activity {
     private BluetoothAdapter btAdapter = null;
     private BluetoothSocket btSocket = null;
     private StringBuilder recDataString = new StringBuilder();
+    private ListView mDrawerList;
+    private ArrayAdapter<String> mAdapter;
 
 
     int previousSensor0 = 0;
@@ -65,8 +70,11 @@ public class MainActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
+
+        mDrawerList = (ListView)findViewById(R.id.navList);
+
+        addDrawerItems();
 
 
         //Link the buttons and textViews to respective views
@@ -257,6 +265,19 @@ public class MainActivity extends Activity {
             }
         });
 
+    }
+
+    private void addDrawerItems() {
+        String[] osArray = { "Settings", "Help", "Rockfield Website", "Feed Type", "About" };
+        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
+        mDrawerList.setAdapter(mAdapter);
+
+        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(MainActivity.this, "Coming soon!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private BluetoothSocket createBluetoothSocket(BluetoothDevice device) throws IOException {
